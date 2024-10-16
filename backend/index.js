@@ -19,6 +19,7 @@ const PORT = process.env.PORT || 8080;
 // CORS configuration
 const allowedOrigins = [
     'http://localhost:5173',
+    'http://localhost:8080',
     'https://smart-box-using-iot.netlify.app',
     'https://smart-box-backend.onrender.com'
 ];
