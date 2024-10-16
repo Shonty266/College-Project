@@ -25,13 +25,6 @@ app.get('/ping', (req, res) => {
     res.send('PONG');
 });
 
-app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets')));
-
-// Serve the index.html from the 'dist' directory
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
 app.use('/auth', authRouter);
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
