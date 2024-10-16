@@ -2054,7 +2054,7 @@ If you have any questions, reply to this email or contact our support at <a href
                             To unlock the box, click the link below:
                         </p>
                         <p style="text-align: center;">
-    <a href="http://192.168.0.102:5173/unlockreceiver/${newOrder._id}" 
+    <a href="https://smart-box-using-iot.netlify.app/unlockreceiver/${newOrder._id}" 
        style="display: inline-block; padding: 12px 20px; font-size: 16px; font-weight: bold; color: white; background-color: #3B82F6; text-decoration: none; border-radius: 5px;">
         Unlock Your Smart Box
     </a>
