@@ -2151,9 +2151,10 @@ const fetchAllOrders = async (req, res) => {
 
         // Fetch all orders from the database
         const orders = await OrderModel.find();
-
+        console.log(orders)
         // Return the list of orders, even if none are found
         res.status(200).json({
+            
             message: "Orders fetched successfully",
             success: true,
             data: orders
