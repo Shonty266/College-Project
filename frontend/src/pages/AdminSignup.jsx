@@ -27,34 +27,47 @@ function AdminSignup() {
     const handleSignup = async (e) => {
         e.preventDefault();
         const { name, email, password } = signupInfo;
+    
+        // Check if all fields are provided
         if (!name || !email || !password) {
             return handleError('Name, email, and password are required');
         }
+    
         try {
             const url = `${BE_URL}/auth/adminsignup`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(signupInfo)
+                body: JSON.stringify(signupInfo),
             });
+    
+            // Check if the response is OK (status code in the range 200-299)
+            if (!response.ok) {
+                const errorResult = await response.json();
+                // Use the error message from the server if available
+                const errorMessage = errorResult.message || 'An error occurred during signup';
+                return handleError(errorMessage);
+            }
+    
             const result = await response.json();
-            const { success, message, error } = result;
+            const { success, message } = result;
+    
             if (success) {
                 handleSuccess(message);
                 setTimeout(() => {
                     navigate('/adminlogin');
                 }, 1000);
-            } else if (error) {
-                handleError(error);
-            } else if (!success) {
-                handleError(message);
+            } else {
+                handleError(message); // Handle any other non-success response
             }
         } catch (err) {
+            console.error('Signup error:', err); // Log the error for debugging
             handleError('Internal server error');
         }
     };
+    
 
     return (
         <div className='flex justify-center items-center h-screen bg-gray-100'>
