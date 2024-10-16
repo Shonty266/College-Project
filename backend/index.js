@@ -25,6 +25,14 @@ app.get('/ping', (req, res) => {
     res.send('PONG');
 });
 
+app.use((req, res, next) => {
+    if (req.path.endsWith('.js')) {
+        res.type('application/javascript');
+    }
+    next();
+});
+
+
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Route to serve index.html for all requests
