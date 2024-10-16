@@ -2,10 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRouter = require('./routes/authRouter');
-const OrderModel = require('./models/order');
-const ProductModel = require('./models/products');
+const OrderModel = require('./models/order'); // Adjust the path as necessary
+const ProductModel = require('./models/products'); // Adjust the path as necessary
+const http = require('http'); // Ensure this is included
+const { exec, spawn } = require('child_process');
 const nodemailer = require('nodemailer');
-const path = require('path');
+
+
 
 require('dotenv').config();
 require('./models/db');
@@ -13,17 +16,13 @@ require('./models/db');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(cors());
+
 app.use(bodyParser.json());
+app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'dist')));
 
 app.get('/ping', (req, res) => {
     res.send('PONG');
-});
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.use('/auth', authRouter);
@@ -35,8 +34,7 @@ app.post('/gps', (req, res) => {
     const { latitude, longitude, unique_key } = req.body;
 
   
-    console.log(`Received GPS Data: Latitude: ${latitude}, Longitude: ${longitude}, Unique Key: ${unique_key}`);
-
+    // console.log(`Received GPS Data: Latitude: ${latitude}, Longitude: ${longitude}, Unique Key: ${unique_key}`);
 
     latestGpsData = { latitude, longitude, unique_key };
     console.log("Updated latest GPS data:", latestGpsData); 
@@ -471,3 +469,5 @@ app.post('/searchOrder', async (req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+// console.log(`Received GPS Data: Latitude: "22.296255", Longitude: "73.247021", Unique Key: "D8BC38FB509C"`);
