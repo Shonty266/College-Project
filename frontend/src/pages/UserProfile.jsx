@@ -20,7 +20,7 @@ function Profile() {
     useEffect(() => {  
         const fetchUserData = async () => {  
             try {  
-                const response = await fetch(`${BE_URL}/auth/userprofile/${UserId}`, {  
+                const response = await fetch(`https://smart-box-backend.onrender.com/auth/userprofile/${UserId}`, {  
                     headers: {  
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,  
                     },  
