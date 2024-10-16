@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 8080;
 // CORS configuration
 const allowedOrigins = [
     'http://localhost:5173/', 
-    'https://smart-box-using-iot.netlify.app'
+    'https://smart-box-using-iot.netlify.app/'
 ];
 
 // CORS configuration
@@ -45,8 +45,11 @@ app.get('/ping', (req, res) => {
 });
 
 // Serve static files from the frontend dist folder
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../frontend')));
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/', 'index.html'));
+});
 
 app.use((req, res, next) => {
     if (req.path.endsWith('.js') || req.path.endsWith('.jsx')) {
@@ -56,9 +59,6 @@ app.use((req, res, next) => {
 });
 
 // Serve index.html for all other requests
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/', 'index.html'));
-});
 
 // Auth routes
 app.use('/auth', authRouter);
