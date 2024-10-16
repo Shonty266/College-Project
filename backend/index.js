@@ -25,6 +25,13 @@ app.get('/ping', (req, res) => {
     res.send('PONG');
 });
 
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Route to serve index.html for all requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
 app.use('/auth', authRouter);
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
