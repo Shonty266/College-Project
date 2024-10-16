@@ -12,14 +12,10 @@ const path = require('path'); // Ensure you import path
 require('dotenv').config();
 require('./models/db'); // Ensure your database connection is set up correctly
 
-const app = express();
-const PORT = process.env.PORT || 8080;
-
-// Middleware
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'build'))); // Serve static files from 'build' for production
+app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from 'dist' for production
 
 // Health check route
 app.get('/ping', (req, res) => {
@@ -28,7 +24,7 @@ app.get('/ping', (req, res) => {
 
 // Serve the main HTML file for the React app
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html')); // Adjust this for the production build
+    res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Adjust this for the production build
 });
 
 // Use the authRouter for authentication-related routes
