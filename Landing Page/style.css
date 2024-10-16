@@ -1,0 +1,72 @@
+.vdodiv{
+    clip-path: circle(var(--clip) at 54.7% 47.8%);
+}
+/* :root{
+    --lsalmon:  rgba(252, 127, 99, 0.982);
+    --salmon: rgb(224, 224, 224);
+    --black: #202020;
+    --cyan:  #b2f6ff;
+    --white: #fff;
+    --dcyan: #021526;
+    --dsalmon: #006271;
+} */
+
+:root{
+    --lsalmon:  rgba(252, 127, 99, 0.982);
+    --salmon: #fff;
+    --black: #202020;
+    --cyan:  #b2f6ff;
+    --white: #fff;
+    --dcyan: #021526;
+    --dsalmon: #000;
+}
+
+body{
+    transition: background-color ease-out .5s;
+}
+
+*::selection{
+    background: var(--lsalmon);
+}
+
+body[theme="black"]{
+    background-color: var(--black);
+}
+body[theme="black"] .section{
+    color: var(--white);
+}
+body[theme="salmon"]{
+    background-color: var(--salmon);
+}
+body[theme="salmon"] .section{
+    color: var(--dsalmon);
+}
+body[theme="cyan"]{
+    background-color: var(--cyan);
+}
+body[theme="cyan"] .section{
+    color: var(--dcyan);
+}
+body[theme="white"]{
+    background-color: var(--white);
+}
+body[theme="white"] .section{
+    color: var(--black);
+}
+
+.box input::placeholder{
+    color: white;
+}
+.abt-hiddenpara.hidden {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+
+.abt-hiddenpara {
+    max-height: 500px; 
+    opacity: 1;
+    transition: max-height 0.5s ease-in, opacity 0.5s ease-in;
+}

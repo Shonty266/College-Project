@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+</head>
+<body>
+  <div class="main w-full h-screen">
+    <div class="top section z-10 fixed px-14 py-6 bg-red-500 w-full flex items-center justify-between">
+        <div class="top-left">
+          <h1 class="name text-4xl font-['Irish_Grover']">HARDWORK</h1>
+        </div>
+        <div class="top-right flex gap-10 items-center">
+          <h1>HOME</h1>
+          <h1>SERVICE</h1>
+          <h1>ABOUT</h1>
+          <button id="btn2">Contact Us</button>
+          <a id="btn1" class="login border-2 border-white p-2 px-6 hover:bg-black hover:border-black hover:text-white active:scale-95 rounded-xl">Login</a>
+        </div>
+    </div>
+      <div class="w-full h-screen absolute z-10 flex items-center justify-end ">
+        <img class="w-full h-screen" src="https://static.vecteezy.com/system/resources/thumbnails/027/465/395/small_2x/glass-globe-and-a-bunch-of-boxes-global-business-and-world-trade-distribution-of-goods-import-and-export-of-products-freight-shipping-delivery-to-new-markets-business-commerce-globalization-photo.jpg" alt="">
+        <div class="box absolute text-center border-2 border-gray-400 rounded-xl  w-[25rem] h-[27rem] mr-[13%] backdrop-blur-lg shadow-slate-900">
+          <h1 class="font-medium pt-5 pb-3 login text-5xl">Login</h1>
+          <div class="text-1xl">
+            <input class="email w-[80%] my-6 border-2 border-black bg-transparent rounded-3xl px-5 py-2 text-1xl" type="e-mail" placeholder="E-mail"><i class="ri-mail-fill absolute top-[26.7%] right-[15%]"></i> <br>
+            <input class="password w-[80%] border-2 border-black bg-transparent rounded-3xl px-5 py-2 mb-1 text-1xl" type="password" placeholder="Password"><i class="ri-lock-2-fill absolute top-[42%] right-[15%]"></i>
+          </div>
+            <div class="check flex justify-around">
+              <div class="flex">
+                <input type="checkbox">
+                <h3>Remember me!</h3>
+              </div>
+              <a href="#">Forgot password?</a>
+            </div> 
+          <button class="lg-btn1 text-[25px] border-2 border-black mt-7 mb-1 px-[30%] rounded-[20px] hover:bg-black hover:text-white hover:border-black">Login</button>
+          <div class="sign-up flex items-center justify-center">
+           <h2>Don't have an account?</h2>
+           <a href="#">Sign Up</a>
+          </div>
+        </div>
+      </div>
+  </div>
+</body>
+</html>
