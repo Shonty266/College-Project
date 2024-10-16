@@ -48,10 +48,10 @@ app.get('/ping', (req, res) => {
 });
 
 // Serve static files from the frontend dist folder
-app.use(express.static(path.join(__dirname, '../frontend/dist/assets/')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/assets/', 'index-CUEcz-0f.js'));
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
 app.use((req, res, next) => {
