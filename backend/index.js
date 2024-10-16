@@ -54,14 +54,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend', 'index.html'));
 });
 
-app.use((req, res, next) => {
-    if (req.path.endsWith('.js') || req.path.endsWith('.jsx')) {
-        res.type('application/javascript'); // Set MIME type for JS/JSX files
-    }
-    next();
-});
-
-
 // Auth routes
 app.use('/auth', authRouter);
 
