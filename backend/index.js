@@ -7,6 +7,8 @@ const ProductModel = require('./models/products'); // Adjust the path as necessa
 const http = require('http'); // Ensure this is included
 const { exec, spawn } = require('child_process');
 const nodemailer = require('nodemailer');
+const path = require('path');
+
 
 require('dotenv').config();
 require('./models/db');
@@ -21,6 +23,13 @@ app.use(express.json());
 
 app.get('/ping', (req, res) => {
     res.send('PONG');
+});
+
+app.use('/assets', express.static(path.join(__dirname, 'dist', 'assets')));
+
+// Serve the index.html from the 'dist' directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.use('/auth', authRouter);
