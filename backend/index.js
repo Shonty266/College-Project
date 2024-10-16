@@ -16,15 +16,25 @@ require('./models/db');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// CORS configuration
+app.use(cors({
+    origin: 'http://localhost:8080', // Adjust as needed
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+}));
 
 app.use(bodyParser.json());
-app.use(cors());
 app.use(express.json());
 
+// Ping route for health check
 app.get('/ping', (req, res) => {
     res.send('PONG');
 });
 
+// Serve static files from the frontend dist folder
+app.use(express.static(path.join(__dirname, '../frontend/dist/')));
+
+// Set MIME types for JS and JSX files
 app.use((req, res, next) => {
     if (req.path.endsWith('.js')) {
         res.type('application/javascript');
@@ -34,21 +44,25 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     if (req.url.endsWith('.jsx')) {
-      res.setHeader('Content-Type', 'application/javascript');
+        res.setHeader('Content-Type', 'application/javascript');
     }
     next();
-  });
-  
-
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
-
-// Route to serve index.html for all requests
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
+// Serve index.html for all other requests
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/', 'index.html'));
+});
 
+// Auth routes
 app.use('/auth', authRouter);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
 
