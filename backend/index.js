@@ -2,32 +2,30 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRouter = require('./routes/authRouter');
-const OrderModel = require('./models/order'); // Adjust the path as necessary
-const ProductModel = require('./models/products'); // Adjust the path as necessary
-const http = require('http'); // Ensure this is included
-const { exec, spawn } = require('child_process');
+const OrderModel = require('./models/order');
+const ProductModel = require('./models/products');
 const nodemailer = require('nodemailer');
-const path = require('path'); // Ensure you import path
+const path = require('path');
 
 require('dotenv').config();
-require('./models/db'); // Ensure your database connection is set up correctly
+require('./models/db');
 
-app.use(bodyParser.json());
+const app = express();
+const PORT = process.env.PORT || 8080;
+
 app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'dist'))); // Serve static files from 'dist' for production
+app.use(express.static(path.join(__dirname, 'dist')));
 
-// Health check route
 app.get('/ping', (req, res) => {
     res.send('PONG');
 });
 
-// Serve the main HTML file for the React app
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html')); // Adjust this for the production build
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
-// Use the authRouter for authentication-related routes
 app.use('/auth', authRouter);
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
