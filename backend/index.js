@@ -61,7 +61,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve index.html for all other requests
 
 // Auth routes
 app.use('/auth', authRouter);
