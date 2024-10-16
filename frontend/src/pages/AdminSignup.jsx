@@ -88,10 +88,10 @@ function AdminSignup() {
                             <label htmlFor='email'>Email</label>
                             <input
     onChange={handleChange}
-    type='text'
-    name='name'
-    placeholder='Enter your name...'
-    value={signupInfo.name}
+    type='email'
+    name='email'
+    placeholder='Enter your email...'
+    value={signupInfo.email}
     className='border-2 pl-4 rounded-lg py-2 border-gray-300 outline-none'
 />
 
