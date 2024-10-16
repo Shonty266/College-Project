@@ -17,8 +17,24 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // CORS configuration
+const allowedOrigins = [
+    'http://localhost:5173', 
+    'https://smart-box-using-iot.netlify.app',
+    'https://smart-box-backend.onrender.com'
+];
+
+// CORS configuration
 app.use(cors({
-    origin: '*',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, origin);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }));
 
 app.use(bodyParser.json());
