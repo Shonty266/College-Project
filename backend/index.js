@@ -17,8 +17,21 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // CORS configuration
+const allowedOrigins = [
+    'http://localhost:8080', 
+    'https://smart-box-using-iot.netlify.app'
+];
+
+// CORS configuration
 app.use(cors({
-    origin: 'http://localhost:8080', // Adjust as needed
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, origin);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -32,19 +45,12 @@ app.get('/ping', (req, res) => {
 });
 
 // Serve static files from the frontend dist folder
-app.use(express.static(path.join(__dirname, '../frontend/dist/')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// Set MIME types for JS and JSX files
-app.use((req, res, next) => {
-    if (req.path.endsWith('.js')) {
-        res.type('application/javascript');
-    }
-    next();
-});
 
 app.use((req, res, next) => {
-    if (req.url.endsWith('.jsx')) {
-        res.setHeader('Content-Type', 'application/javascript');
+    if (req.path.endsWith('.js') || req.path.endsWith('.jsx')) {
+        res.type('application/javascript'); // Set MIME type for JS/JSX files
     }
     next();
 });
