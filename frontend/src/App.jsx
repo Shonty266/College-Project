@@ -55,9 +55,9 @@ function App() {
       />
       <Routes>
         <Route path='/' element={<Navigate to="/login" />} />
-        {/* <Route path='/realdata' element={<Navigate to="/RealTimeData" />} /> */}
+        
         <Route path='/login' element={<Login />} />
-        {/* <Route path='/otpverification' element={<OtpVerification />} /> */}
+        
         <Route path='/adminsignup' element={<AdminSignup />} />
         <Route path='/deliveryboysignup' element={<DeliveryBoySignUp />} />
         <Route path='/unlockreceiver/:id' element={<UnlockPhone />} />
