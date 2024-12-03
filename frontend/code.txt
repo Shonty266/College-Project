@@ -1,0 +1,271 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import Navbar from '../components/Navbar/Navbar';
+import Modal from './Modal';
+import 'react-toastify/dist/ReactToastify.css'; // Ensure to include this for toast notifications
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// List of cities in Gujarat
+const gujaratCities = [
+  'Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar', 'Junagadh', 'Bhavnagar', 'Amreli',
+  'Anand', 'Navsari', 'Valsad', 'Bharuch', 'Jamnagar', 'Porbandar', 'Mehsana', 'Nadiad',
+  'Palanpur', 'Morbi', 'Patan', 'Bhuj', 'Gandhidham', 'Surendranagar'
+];
+
+const defaultLocation = [23.0225, 72.5714]; // Default location (Ahmedabad)
+
+function Home() {
+  const [loggedInUser, setLoggedInUser] = useState('');
+  const [userId, setUserId] = useState('');
+  const [selectedBox, setSelectedBox] = useState(null);
+  const [boxes, setBoxes] = useState([]);
+  const [pickupLocation, setPickupLocation] = useState('');
+  const [dropoffLocation, setDropoffLocation] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [userCoordinates, setUserCoordinates] = useState(defaultLocation);
+  const [dropoffCoordinates, setDropoffCoordinates] = useState(null);
+  const [price, setPrice] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal visibility state
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('loggedInUser');
+    const storedUserId = localStorage.getItem('id');
+
+    setLoggedInUser(storedUser || '');
+    setUserId(storedUserId || '');
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserCoordinates([latitude, longitude]);
+        setPickupLocation(`${latitude}, ${longitude}`);
+      },
+      (error) => {
+        console.error('Error fetching location:', error);
+        toast.error('Unable to fetch your location');
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    const fetchBoxes = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/auth/allproductsforuser', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          if (result.data.length === 0) {
+            toast.error('No products available');
+          } else {
+            setBoxes(result.data);
+          }
+        } else {
+          setError(result.message || 'Failed to fetch boxes');
+        }
+      } catch (err) {
+        setError('Internal server error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBoxes();
+  }, []);
+
+  const handleBoxSelect = (box) => {
+    if (selectedBox?.product_name === box.product_name) {
+      setSelectedBox(null);
+      setPrice(0);
+    } else {
+      setSelectedBox(box);
+      if (userCoordinates && dropoffCoordinates) {
+        const distance = calculateDistance(userCoordinates, dropoffCoordinates);
+        const calculatedPrice = calculatePrice(distance);
+        setPrice(calculatedPrice);
+      }
+    }
+    setIsModalOpen(false); // Close the modal after selecting a box
+  };
+
+  const handleSearch = () => {
+    if (userCoordinates && dropoffCoordinates) {
+      const distance = calculateDistance(userCoordinates, dropoffCoordinates);
+      const calculatedPrice = calculatePrice(distance);
+      setPrice(calculatedPrice);
+    } else {
+      toast.error('Please enter a valid drop-off location');
+    }
+
+    setIsVisible((prev) => !prev);
+    setIsModalOpen(true); // Open the modal when searching
+  };
+
+  const handleRequestBox = () => {
+    if (!pickupLocation || !dropoffLocation) {
+      toast.error('Please enter both pickup and drop-off locations');
+      return;
+    }
+
+    navigate('/checkout', {
+      state: {
+        selectedBox,
+        pickupLocation,
+        dropoffLocation,
+        distance: calculateDistance(userCoordinates, dropoffCoordinates),
+        price
+      }
+    });
+  };
+
+  const handleDropoffChange = (event) => {
+    const city = event.target.value;
+    setDropoffLocation(city);
+
+    const cityCoordinates = {
+      Ahmedabad: [23.0225, 72.5714],
+      Surat: [21.1702, 72.8311],
+      Vadodara: [22.3074, 73.1812],
+      Rajkot: [22.3039, 70.8022],
+      Gandhinagar: [23.2156, 72.6369],
+      Junagadh: [21.5216, 70.4573],
+      Bhavnagar: [21.7545, 72.3718],
+      Amreli: [21.5914, 71.2167],
+      Anand: [22.5668, 72.9281],
+      Navsari: [20.9581, 73.0169],
+      Valsad: [20.5992, 72.9342],
+      Bharuch: [21.7051, 72.9959],
+      Jamnagar: [22.4707, 70.0577],
+      Porbandar: [21.6417, 69.6293],
+      Mehsana: [23.6000, 72.4000],
+      Nadiad: [22.6921, 72.8614],
+      Palanpur: [24.1713, 72.4397],
+      Morbi: [22.8173, 70.8370],
+      Patan: [23.8500, 72.1200],
+      Bhuj: [23.2419, 69.6669],
+      Gandhidham: [23.0753, 70.1337],
+      Surendranagar: [22.7277, 71.6486]
+    };
+    const coordinates = cityCoordinates[city] || null;
+    setDropoffCoordinates(coordinates);
+
+    if (userCoordinates && coordinates) {
+      const distance = calculateDistance(userCoordinates, coordinates);
+      const calculatedPrice = calculatePrice(distance);
+      setPrice(calculatedPrice);
+    }
+  };
+
+  const calculateDistance = (coords1, coords2) => {
+    if (!coords1 || !coords2) return 0;
+
+    const [lat1, lon1] = coords1;
+    const [lat2, lon2] = coords2;
+
+    const R = 6371;
+    const dLat = (lat2 - lat1) * (Math.PI / 180);
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+
+    return distance;
+  };
+
+  const calculatePrice = (distance) => {
+    return distance * 5; // Price rate of 5 INR per kilometer
+  };
+
+  return (
+    <div>
+      <Navbar />
+      <div className="p-4">
+        <h1 className="text-2xl font-bold">Home</h1>
+        <div className="my-4">
+          <label htmlFor="pickup" className="block mb-2 text-sm font-medium text-gray-700">
+            Pickup Location
+          </label>
+          <input
+            id="pickup"
+            type="text"
+            value={pickupLocation}
+            readOnly
+            className="border p-2 rounded-lg w-full"
+          />
+        </div>
+        <div className="my-4">
+          <label htmlFor="dropoff" className="block mb-2 text-sm font-medium text-gray-700">
+            Dropoff Location
+          </label>
+          <input
+            id="dropoff"
+            type="text"
+            value={dropoffLocation}
+            onChange={handleDropoffChange}
+            list="cities"
+            className="border p-2 rounded-lg w-full"
+          />
+          <datalist id="cities">
+            {gujaratCities.map((city) => (
+              <option key={city} value={city} />
+            ))}
+          </datalist>
+        </div>
+        <button
+          onClick={handleSearch}
+          className="bg-blue-500 text-white p-2 rounded-lg"
+        >
+          Search
+        </button>
+        {selectedBox && (
+          <div className="my-4">
+            <h2 className="text-xl font-semibold">Selected Box</h2>
+            <p>Name: {selectedBox.product_name}</p>
+            <p>Size: {selectedBox.product_size}</p>
+            <p>Description: {selectedBox.product_description}</p>
+            <p>Price: {price} INR</p>
+          </div>
+        )}
+        <button
+          onClick={handleRequestBox}
+          className="bg-green-500 text-white p-2 rounded-lg"
+        >
+          Request Box
+        </button>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          boxes={boxes}
+          onSelectBox={handleBoxSelect}
+          selectedBox={selectedBox}
+        />
+        <div className="mt-8 z-10">
+          <MapContainer center={userCoordinates} zoom={13} style={{ height: '400px', width: '100%' }}>
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={userCoordinates}><Popup>Your location</Popup></Marker>
+            {dropoffCoordinates && <Marker position={dropoffCoordinates}><Popup>Drop-off location</Popup></Marker>}
+            {userCoordinates && dropoffCoordinates && (
+              <Polyline positions={[userCoordinates, dropoffCoordinates]} color="blue" />
+            )}
+          </MapContainer>
+        </div>
+      </div>
+      <ToastContainer />
+    </div>
+  );
+}
+
+export default Home;
