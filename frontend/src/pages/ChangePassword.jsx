@@ -16,7 +16,7 @@ const ChangePassword = () => {
 
         try {
             const userId = localStorage.getItem('id'); // Get the user ID from local storage
-            const response = await fetch('http://localhost:8080/auth/changepassword', {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/changepassword`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

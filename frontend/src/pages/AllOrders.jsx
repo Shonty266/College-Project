@@ -77,7 +77,7 @@ function AllOrders() {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/auth/orderhistory', {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/orderhistory`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -126,7 +126,7 @@ function AllOrders() {
 
     const handleTrackClick = async (orderId, orderDetails) => {
       try {
-          const response = await fetch('http://localhost:8080/receivedlocation', {
+          const response = await fetch(`${import.meta.env.VITE_BASE_URL}/receivedlocation`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ function AllOrders() {
     const handleUnlockClick = async (orderId) => {
         try {
             // Step 1: Call the /searchOrder endpoint with the fetched order ID
-            const searchResponse = await fetch('http://localhost:8080/searchOrder', {
+            const searchResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/searchOrder`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -207,7 +207,7 @@ function AllOrders() {
             console.log('Search response:', searchData);
     
             // Step 2: Call the /runScript endpoint to execute the Python script
-            const scriptResponse = await fetch('http://localhost:8080/runScript', {
+            const scriptResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/runScript`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ function AllOrders() {
               return;
           }
 
-            const url = `http://localhost:8080/auth/orderhistory/${selectedOrderId}/cancel`;
+            const url = `${import.meta.env.VITE_BASE_URL}/auth/orderhistory/${selectedOrderId}/cancel`;
             const response = await fetch(url, {
                 method: 'PUT',
                 headers: {

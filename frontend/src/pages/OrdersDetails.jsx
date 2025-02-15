@@ -25,7 +25,7 @@ function OrdersDetails() {
 
         const fetchOrders = async () => {
             try {
-                const response = await fetch('http://localhost:8080/auth/allorders', {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -47,7 +47,7 @@ function OrdersDetails() {
 
         const fetchDeliveryBoys = async () => {
             try {
-                const response = await fetch('http://localhost:8080/auth/alldeliveryboys', {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/alldeliveryboys`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -72,7 +72,7 @@ function OrdersDetails() {
         const userRole = localStorage.getItem('role'); 
     
         try {
-            const response = await fetch(`http://localhost:8080/auth/allorders/${orderId}/status`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders/${orderId}/status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ function OrdersDetails() {
         const userRole = localStorage.getItem('role');
     
         try {
-            const response = await fetch(`http://localhost:8080/auth/allorders/${orderId}/box-status`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders/${orderId}/box-status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ function OrdersDetails() {
         const userRole = localStorage.getItem('role');
     
         try {
-            const response = await fetch(`http://localhost:8080/auth/allorders/${orderId}/receiver-box-status`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders/${orderId}/receiver-box-status`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -170,7 +170,7 @@ function OrdersDetails() {
         }
     
         try {
-            const response = await fetch(`http://localhost:8080/auth/assignorder`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/assignorder`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

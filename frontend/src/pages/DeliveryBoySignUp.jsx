@@ -41,7 +41,7 @@ const DeliveryBoySignUp = () => {
         }
 
         try {
-            const url = 'http://localhost:8080/auth/deliveryboysignup';
+            const url = `${import.meta.env.VITE_BASE_URL}/auth/deliveryboysignup`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

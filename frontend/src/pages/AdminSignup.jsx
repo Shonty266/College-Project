@@ -29,7 +29,7 @@ function AdminSignup() {
             return handleError('Name, email, and password are required');
         }
         try {
-            const url = `http://localhost:8080/auth/adminsignup`;
+            const url = `${import.meta.env.VITE_BASE_URL}/auth/adminsignup`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

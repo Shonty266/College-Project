@@ -69,11 +69,13 @@ function Home() {
   useEffect(() => {
     const fetchBoxes = async () => {
       try {
-        const response = await fetch('http://localhost:8080/auth/allproductsforuser', {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allproductsforuser`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
+
+        
 
         const result = await response.json();
 

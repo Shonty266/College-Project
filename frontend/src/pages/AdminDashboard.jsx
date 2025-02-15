@@ -48,7 +48,7 @@ function AdminDashboard() {
         const fetchCounts = async () => {
             try {
                 // Fetch user count
-                const userResponse = await fetch('http://localhost:8080/auth/fetchusercount', {
+                const userResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchusercount`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -62,7 +62,7 @@ function AdminDashboard() {
                 }
 
                 // Fetch delivery boy count
-                const deliveryBoyResponse = await fetch('http://localhost:8080/auth/fetchdeliveryboycount', {
+                const deliveryBoyResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchdeliveryboycount`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -76,7 +76,7 @@ function AdminDashboard() {
                 }
 
                 // Fetch order counts
-                const orderResponse = await fetch('http://localhost:8080/auth/fetchordercount', {
+                const orderResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchordercount`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -93,7 +93,7 @@ function AdminDashboard() {
                 }
 
                 // Fetch product count
-                const productResponse = await fetch('http://localhost:8080/auth/fetchproductscount', {
+                const productResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchproductscount`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -118,7 +118,7 @@ function AdminDashboard() {
         const fetchOrders = async () => {
             setLoading(true); // Set loading state
             try {
-                const response = await fetch('http://localhost:8080/auth/allorders', {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }

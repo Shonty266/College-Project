@@ -26,7 +26,7 @@ function Login() {
 
         setIsLoading(true);
         try {
-            const url = 'http://localhost:8080/auth/login';
+            const url = `${import.meta.env.VITE_BASE_URL}/auth/login`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

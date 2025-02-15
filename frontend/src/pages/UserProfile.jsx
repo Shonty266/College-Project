@@ -19,7 +19,7 @@ function Profile() {
     useEffect(() => {  
         const fetchUserData = async () => {  
             try {  
-                const response = await fetch(`http://localhost:8080/auth/userprofile/${UserId}`, {  
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/userprofile/${UserId}`, {  
                     headers: {  
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,  
                     },  

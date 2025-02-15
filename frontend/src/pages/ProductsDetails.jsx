@@ -36,7 +36,7 @@ function ProductsDetails() {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:8080/auth/allproducts', {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allproducts`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -63,7 +63,7 @@ function ProductsDetails() {
     const confirmDelete = async () => {
         if (productToDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/auth/deleteproduct/${productToDelete._id}`, {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/deleteproduct/${productToDelete._id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -89,7 +89,7 @@ function ProductsDetails() {
 
     const handleUpdateStatus = async (id, status) => {
         try {
-            const response = await fetch(`http://localhost:8080/auth/editproducts/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/editproducts/${id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

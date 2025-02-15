@@ -21,7 +21,7 @@ const AssignedOrders = () => {
     // Fetch the assigned orders from the backend
     const fetchAssignedOrders = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/auth/assignedorders/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/assignedorders/${id}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,

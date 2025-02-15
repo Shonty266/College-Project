@@ -20,7 +20,7 @@ function DeliveryBoyProfile() {
     useEffect(() => {  
         const fetchDeliveryBoyData = async () => {  
             try {  
-                const response = await fetch(`http://localhost:8080/auth/deliveryboyprofile/${deliveryBoyId}`, {  
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/deliveryboyprofile/${deliveryBoyId}`, {  
                     headers: {  
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,  
                     },  

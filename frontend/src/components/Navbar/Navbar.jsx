@@ -31,7 +31,7 @@ const Navbar = () => {
 
                 if (storedUserId) {
                     setUserId(storedUserId);
-                    const response = await fetch(`http://localhost:8080/auth/userprofile/${storedUserId}`, {
+                    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/userprofile/${storedUserId}`, {
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }

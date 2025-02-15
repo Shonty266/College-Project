@@ -25,7 +25,7 @@ function AdminProfile() {
             }
 
             try {
-                const response = await fetch(`http://localhost:8080/auth/adminprofile/${AdminId}`, {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/adminprofile/${AdminId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },

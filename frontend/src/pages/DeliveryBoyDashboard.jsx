@@ -46,7 +46,7 @@ function DeliveryBoyDashboard() {
             if (!deliveryBoyId) return;
 
             try {
-                const response = await fetch(`http://localhost:8080/auth/deliveryboy/allorders`, {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/deliveryboy/allorders`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -126,7 +126,7 @@ function DeliveryBoyDashboard() {
         toast.success(`Order status updated to ${newStatus}`);
     
         try {
-            const response = await fetch(`http://localhost:8080/auth/allorders/${orderId}/status`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allorders/${orderId}/status`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -37,7 +37,7 @@ function Users() {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://localhost:8080/auth/allusers', {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/allusers`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -68,7 +68,7 @@ function Users() {
     const confirmDelete = async () => {
         if (userToDelete) {
             try {
-                const response = await fetch(`http://localhost:8080/auth/deleteuser/${userToDelete._id}`, {
+                const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/deleteuser/${userToDelete._id}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
