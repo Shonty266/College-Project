@@ -1,18 +1,13 @@
-
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import authRouter from "./routes/authRouter.js"; 
-import OrderModel from "./models/order.js"; 
-import ProductModel from "./models/products.js"; 
-import http from "http";
-import { exec, spawn } from "child_process";
-import nodemailer from "nodemailer";
-import { Console } from "console";
-import path from "path";
-import { fileURLToPath } from "url";
-
-
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const authRouter = require('./routes/authRouter');
+const OrderModel = require('./models/order'); // Adjust the path as necessary
+const ProductModel = require('./models/products'); // Adjust the path as necessary
+const http = require('http'); // Ensure this is included
+const { exec, spawn } = require('child_process');
+const nodemailer = require('nodemailer');
+const { Console } = require('console');
 
 
 
@@ -25,26 +20,14 @@ require('./models/db');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+app.use(bodyParser.json());
 app.use(cors({
-  origin: "https://smart-box-frontend.onrender.com", 
-  credentials: true,
-  methods: "GET, POST, PUT, DELETE",
-  allowedHeaders: "Content-Type, Authorization"
-}));
-
-app.use(express.json());  
-app.use(bodyParser.json()); 
-
-const frontendPath = path.join(__dirname, "dist");
-app.use(express.static(frontendPath));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(frontendPath, "index.html"));
-});
-
+    origin: "https://smart-box-frontend.onrender.com",
+    methods: "GET, POST, PUT, DELETE",
+    allowedHeaders: "Content-Type, Authorization",
+    credentials: true 
+  }));
+app.use(express.json());
 
 app.get('/ping', (req, res) => {
     res.send('PONG');
