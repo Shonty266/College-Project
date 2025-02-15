@@ -14,19 +14,25 @@ const { Console } = require('console');
 require('dotenv').config();
 require('./models/db');
 
-
+const FRONTEND_URL = "https://smart-boxx.netlify.app"; 
 
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
-app.use(cors({
-    origin: "https://smart-boxx.netlify.app",
-    methods: "GET, POST, PUT, DELETE",
-    allowedHeaders: "Content-Type, Authorization",
-    credentials: true 
-  }));
+app.use(
+    cors({
+      origin: FRONTEND_URL, // This should be your frontend URL
+      methods: ["GET", "POST", "PUT", "DELETE"], 
+      allowedHeaders: ["Content-Type", "Authorization"], 
+      credentials: true, // Enable if using cookies or sessions
+    })
+  );
+
+  app.get("/", (req, res) => {
+    res.send("Backend is running with CORS setup!");
+  });
 app.use(express.json());
 
 app.get('/ping', (req, res) => {
