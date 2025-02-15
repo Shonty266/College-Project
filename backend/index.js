@@ -15,14 +15,16 @@ require('dotenv').config();
 require('./models/db');
 
 
+
+
+const app = express();
+const PORT = process.env.PORT || 8080;
+
 app.use(express.static("dist"));
 
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
-
-const app = express();
-const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(cors({
