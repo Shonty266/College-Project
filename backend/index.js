@@ -1,16 +1,18 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cors from "cors";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const authRouter = require('./routes/authRouter');
+const OrderModel = require('./models/order'); // Adjust the path as necessary
+const ProductModel = require('./models/products'); // Adjust the path as necessary
+const http = require('http'); // Ensure this is included
+const { exec, spawn } = require('child_process');
+const nodemailer = require('nodemailer');
+const { Console } = require('console');
 
-import authRouter from "./routes/authRouter.js";
-import OrderModel from "./models/order.js";
-import ProductModel from "./models/products.js";
-import "./models/db.js";
 
-dotenv.config();
+
+require('dotenv').config();
+require('./models/db');
 
 const FRONTEND_URL = "https://smart-boxx.netlify.app";
 const PORT = process.env.PORT || 8080;
