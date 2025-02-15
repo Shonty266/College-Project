@@ -1,45 +1,48 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const authRouter = require('./routes/authRouter');
-const OrderModel = require('./models/order'); // Adjust the path as necessary
-const ProductModel = require('./models/products'); // Adjust the path as necessary
-const http = require('http'); // Ensure this is included
-const { exec, spawn } = require('child_process');
-const nodemailer = require('nodemailer');
-const { Console } = require('console');
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
+import authRouter from "./routes/authRouter.js";
+import OrderModel from "./models/order.js";
+import ProductModel from "./models/products.js";
+import "./models/db.js";
 
+dotenv.config();
 
-require('dotenv').config();
-require('./models/db');
-
-const FRONTEND_URL = "https://smart-boxx.netlify.app"; 
-
-
-const app = express();
+const FRONTEND_URL = "https://smart-boxx.netlify.app";
 const PORT = process.env.PORT || 8080;
 
-app.use(bodyParser.json());
-app.use(
-    cors({
-      origin: FRONTEND_URL, // This should be your frontend URL
-      methods: ["GET", "POST", "PUT", "DELETE"], 
-      allowedHeaders: ["Content-Type", "Authorization"], 
-      credentials: true, // Enable if using cookies or sessions
-    })
-  );
+const app = express();
 
-  app.get("/", (req, res) => {
-    res.send("Backend is running with CORS setup!");
-  });
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+
+app.use(bodyParser.json());
 app.use(express.json());
 
-app.get('/ping', (req, res) => {
-    res.send('PONG');
+// Fix "__dirname" in ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ✅ Make sure we serve from the correct `dist` folder
+const frontendPath = path.join(__dirname, "../frontend/dist"); // Correcting the frontend dist path
+app.use(express.static(frontendPath));
+
+// ✅ Handle React frontend routes
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-app.use('/auth', authRouter);
+app.use("/auth", authRouter);
 
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
