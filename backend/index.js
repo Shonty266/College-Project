@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: "https://smart-box-frontend.onrender.com",
+    origin: "https://smart-boxx.netlify.app",
     methods: "GET, POST, PUT, DELETE",
     allowedHeaders: "Content-Type, Authorization",
     credentials: true 
