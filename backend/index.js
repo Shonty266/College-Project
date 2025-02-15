@@ -9,6 +9,7 @@ const { exec, spawn } = require('child_process');
 const nodemailer = require('nodemailer');
 const { Console } = require('console');
 const path = require("path");
+import { fileURLToPath } from "url";
 
 
 
@@ -23,22 +24,26 @@ require('./models/db');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Path to the frontend's built files (Ensure you update this if needed)
-const frontendPath = path.join(__dirname, "../frontend"); // Adjust if needed
+app.use(cors({
+  origin: "https://smart-box-frontend.onrender.com", 
+  credentials: true,
+  methods: "GET, POST, PUT, DELETE",
+  allowedHeaders: "Content-Type, Authorization"
+}));
 
-// Serve frontend static files
+app.use(express.json());  
+app.use(bodyParser.json()); 
+
+const frontendPath = path.join(__dirname, "dist");
 app.use(express.static(frontendPath));
 
-app.use(bodyParser.json());
-app.use(cors({
-    origin: "https://smart-box-frontend.onrender.com",
-    methods: "GET, POST, PUT, DELETE",
-    allowedHeaders: "Content-Type, Authorization",
-    credentials: true 
-  }));
-app.use(express.json());
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
+
 
 app.get('/ping', (req, res) => {
     res.send('PONG');
