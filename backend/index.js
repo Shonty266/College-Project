@@ -23,11 +23,13 @@ require('./models/db');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-app.use(express.static("dist"));
+const __dirname = path.dirname(__filename);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-});
+// Path to the frontend's built files (Ensure you update this if needed)
+const frontendPath = path.join(__dirname, "../frontend"); // Adjust if needed
+
+// Serve frontend static files
+app.use(express.static(frontendPath));
 
 app.use(bodyParser.json());
 app.use(cors({
