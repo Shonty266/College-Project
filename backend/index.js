@@ -1,14 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const authRouter = require('./routes/authRouter');
-const OrderModel = require('./models/order'); // Adjust the path as necessary
-const ProductModel = require('./models/products'); // Adjust the path as necessary
-const http = require('http'); // Ensure this is included
-const { exec, spawn } = require('child_process');
-const nodemailer = require('nodemailer');
-const { Console } = require('console');
-const path = require("path");
+
+import express from "express";
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import authRouter from "./routes/authRouter.js"; 
+import OrderModel from "./models/order.js"; 
+import ProductModel from "./models/products.js"; 
+import http from "http";
+import { exec, spawn } from "child_process";
+import nodemailer from "nodemailer";
+import { Console } from "console";
+import path from "path";
 import { fileURLToPath } from "url";
 
 
