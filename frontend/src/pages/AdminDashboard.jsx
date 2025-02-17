@@ -93,26 +93,42 @@ function AdminDashboard() {
                 }
 
                 // Fetch product count
-                const productResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchproductscount`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                const productResult = await productResponse.json();
-
-                if (productResult.success) {
-                    setTotalProducts(productResult.data.totalProducts);
-                } else {
-                    console.error(productResult.message || 'Failed to fetch product count');
-                }
-
-            } catch (err) {
-                console.error('Error fetching counts:', err);
-            }
-        };
-
-        fetchCounts();
-    }, []);
+                useEffect(() => {
+                    const fetchCounts = async () => {
+                        try {
+                            const productResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchproductscount`, {
+                                headers: {
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                }
+                            });
+                
+                            // Check if the response is OK (status code 200-299)
+                            if (!productResponse.ok) {
+                                throw new Error(`HTTP error! Status: ${productResponse.status}`);
+                            }
+                
+                            // Check if the response is JSON
+                            const contentType = productResponse.headers.get('content-type');
+                            if (!contentType || !contentType.includes('application/json')) {
+                                throw new Error('Expected JSON response, but received non-JSON data.');
+                            }
+                
+                            const productResult = await productResponse.json();
+                
+                            if (productResult.success) {
+                                setTotalProducts(productResult.data.totalProducts);
+                            } else {
+                                console.error(productResult.message || 'Failed to fetch product count');
+                            }
+                
+                        } catch (err) {
+                            console.error('Error fetching counts:', err);
+                        }
+                    };
+                
+                    fetchCounts();
+                }, []);
+                
 
     useEffect(() => {
         const fetchOrders = async () => {
