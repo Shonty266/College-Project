@@ -92,19 +92,7 @@ function AdminDashboard() {
                     console.error(orderResult.message || 'Failed to fetch order count');
                 }
     
-                // Fetch product count
-                const productResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/fetchproductscount`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                const productResult = await productResponse.json();
-    
-                if (productResult.success) {
-                    setTotalProducts(productResult.data.totalProducts);
-                } else {
-                    console.error(productResult.message || 'Failed to fetch product count');
-                }
+               
     
             } catch (err) {
                 console.error('Error fetching counts:', err);

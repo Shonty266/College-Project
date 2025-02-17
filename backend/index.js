@@ -1,4 +1,4 @@
-import express from "express"; // ✅ Correct import
+import express from "express"; 
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRouter from "./routes/authRouter.js"; // Ensure file extension if using ES Modules
@@ -10,7 +10,8 @@ import nodemailer from "nodemailer";
 import { Console } from "console";
 import dotenv from "dotenv";
 import path from "path";
-import { fileURLToPath } from "url"; // ✅ Fix for __dirname in ES Modules
+import { fileURLToPath } from "url"; 
+
 
 dotenv.config();
 import "./models/db.js"; 
