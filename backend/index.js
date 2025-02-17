@@ -1,20 +1,21 @@
-import { express } from "express";
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const authRouter = require('./routes/authRouter');
-const OrderModel = require('./models/order'); // Adjust the path as necessary
-const ProductModel = require('./models/products'); // Adjust the path as necessary
-const http = require('http'); // Ensure this is included
-const { exec, spawn } = require('child_process');
-const nodemailer = require('nodemailer');
-const { Console } = require('console');
+import express from "express"; // ✅ Correct import
+import bodyParser from "body-parser";
+import cors from "cors";
+import authRouter from "./routes/authRouter.js"; // Ensure file extension if using ES Modules
+import OrderModel from "./models/order.js";
+import ProductModel from "./models/products.js";
+import http from "http";
+import { exec, spawn } from "child_process";
+import nodemailer from "nodemailer";
+import { Console } from "console";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url"; // ✅ Fix for __dirname in ES Modules
 
+dotenv.config();
+import "./models/db.js"; 
 
-
-require('dotenv').config();
-require('./models/db');
-
-const FRONTEND_URL = "https://super-kashata-8ed5b4.netlify.app/";
+const FRONTEND_URL = "https://smart-boxx.netlify.app";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
@@ -31,12 +32,12 @@ app.use(
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Fix "__dirname" in ES Modules
+// ✅ Fix "__dirname" in ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Make sure we serve from the correct `dist` folder
-const frontendPath = path.join(__dirname, "../frontend/dist"); // Correcting the frontend dist path
+// ✅ Correct frontend path
+const frontendPath = path.join(__dirname, "../frontend/dist");
 app.use(express.static(frontendPath));
 
 // ✅ Handle React frontend routes
@@ -44,7 +45,9 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(frontendPath, "index.html"));
 });
 
-app.use("/auth", authRouter);
+app.use("/auth", authRouter); // ✅ Fix missing semicolon
+
+
 
 
 let latestGpsData = { latitude: null, longitude: null, unique_key: null };
