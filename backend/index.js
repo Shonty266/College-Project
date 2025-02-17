@@ -1,4 +1,4 @@
-const express = require('express');
+import { express } from "express";
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRouter = require('./routes/authRouter');
@@ -14,7 +14,7 @@ const { Console } = require('console');
 require('dotenv').config();
 require('./models/db');
 
-const FRONTEND_URL = "https://smart-boxx.netlify.app";
+const FRONTEND_URL = "https://super-kashata-8ed5b4.netlify.app/";
 const PORT = process.env.PORT || 8080;
 
 const app = express();
